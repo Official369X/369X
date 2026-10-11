@@ -39,7 +39,7 @@ const CONFIG = {
     market:  "0xC523b4eD985175505cB63012058cF90A7493F250",   // Market369X
     vault:   "0xb8b07eA74D486A55C805208A5249da9391fa11dc",   // Vault369X
     staking: "0x19097C5f186d41c8EC666078D1dc3F5B39bdA70c",   // Stake369X
-    referral: ""   // Referral369X
+    referral: "0x8D931c2f10B1605254837641241c5Bf3a494E39a"   // Referral369X
   },
   // public read-only RPC endpoints (tried in order)
   // vault + staking from before an upgrade (if any): the website lets people withdraw from them
