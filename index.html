@@ -1,0 +1,106 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+<meta charset="utf-8">
+<meta name="viewport" content="width=device-width, initial-scale=1, viewport-fit=cover">
+<title>369X · Predict, Participate, Prosper</title>
+<meta name="description" content="369X is an on-chain prediction market. Trade YES or NO on real-world outcomes create your own markets, and earn from the vault.">
+<meta property="og:title" content="369X · Predict, Participate, Prosper">
+<meta property="og:description" content="Trade YES or NO on crypto, sports, politics and world events. Create markets and earn.">
+<meta property="og:image" content="/assets/logo.png">
+<meta name="theme-color" content="#030405">
+<link rel="icon" type="image/png" href="/assets/logo.png">
+<link rel="preconnect" href="https://fonts.googleapis.com">
+<link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+<link href="https://fonts.googleapis.com/css2?family=Unbounded:wght@400;500;600;700&family=Manrope:wght@400;500;600;700&display=swap" rel="stylesheet">
+<link rel="stylesheet" href="css/styles.css">
+</head>
+<body class="booting">
+<svg width="0" height="0" style="position:absolute" aria-hidden="true" focusable="false"><defs><linearGradient id="ig369" gradientUnits="userSpaceOnUse" x1="2" y1="2" x2="22" y2="22"><stop offset="0" stop-color="#7cf26a"/><stop offset=".5" stop-color="#6fe6c0"/><stop offset="1" stop-color="#5fd6f2"/></linearGradient></defs></svg>
+<div id="splash" class="splash" role="status" aria-live="polite">
+  <div class="splash-glow" aria-hidden="true"></div>
+  <div class="splash-in">
+    <div class="xl-logo splash-logo"><img src="assets/logo.png" alt="369X" width="220" height="90"><i class="xl-shine" aria-hidden="true"></i></div>
+    <div class="xl-bar" aria-hidden="true"><i></i></div>
+    <p class="xl-text">Loading 369X…</p>
+  </div>
+</div>
+<div class="glow a"></div><div class="glow b"></div>
+
+<div id="demoBanner"></div>
+<div id="refBanner"></div>
+
+<header class="nav">
+  <div class="wrap">
+    <a href="#/" class="logo" aria-label="369X home"><img src="assets/logo.png" alt="369X" width="88" height="36"></a>
+    <nav class="nav-links" aria-label="Primary">
+      <a href="#/markets" data-r="markets">Markets</a>
+      <a href="#/leverage" data-r="leverage">Leverage</a>
+      <a href="#/portfolio" data-r="portfolio">Portfolio</a>
+      <a href="#/vault" data-r="vault">Vault</a>
+      <a href="#/rewards" data-r="rewards">Rewards</a>
+      <a href="#/leaderboard" data-r="leaderboard">Leaderboard</a>
+      <details class="nav-more"><summary>More <svg width="10" height="10" viewBox="0 0 10 10" fill="none" stroke="currentColor" stroke-width="1.6"><path d="M2 3.5l3 3 3-3"/></svg></summary>
+        <div class="menu">
+          <a href="#/create"><div>Create market<small>Earn 0.5% of every trade</small></div></a>
+          <a href="#/stake"><div>Stake $369X<small>Lower fees, vote on outcomes</small></div></a>
+          <a href="#/resolve"><div>Resolution<small>Vote on ended markets</small></div></a>
+          <a href="#/affiliate"><div>Affiliate<small>Your referral link</small></div></a>
+          <a href="#/token"><div>$369X token<small>Utility and tokenomics</small></div></a>
+          <a href="#/docs"><div>Docs<small>How everything works</small></div></a>
+        </div>
+      </details>
+    </nav>
+    <div class="nav-right" id="walletSlot"></div>
+    <button class="nav-burger" data-act="drawerOpen" aria-label="Open menu" aria-expanded="false" aria-controls="drawer"><svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.9" stroke-linecap="round" aria-hidden="true"><path d="M4 7h16M4 12h16M4 17h11"/></svg></button>
+  </div>
+</header>
+<div class="drawer-wrap" id="drawerWrap" hidden><div class="drawer-scrim" data-act="drawerClose"></div><aside class="drawer" id="drawer" role="dialog" aria-modal="true" aria-label="Menu"></aside></div>
+
+<main id="app"></main>
+
+<footer>
+  <div class="wrap foot">
+    <div>
+      <img src="assets/logo.png" alt="369X" width="68" height="28" loading="lazy">
+      <p>Global prediction. Real rewards. A brighter tomorrow.</p>
+      <p style="margin-top:6px">Predictions involve risk. Only trade what you can afford to lose.</p>
+    </div>
+    <div class="foot-links">
+      <div><b>Trade</b><a href="#/markets">Markets</a><a href="#/leverage">Leverage (soon)</a><a href="#/create">Create market</a><a href="#/portfolio">Portfolio</a><a href="#/leaderboard">Leaderboard</a></div>
+      <div><b>Earn</b><a href="#/vault">Vault</a><a href="#/stake">Stake</a><a href="#/rewards">Rewards</a><a href="#/affiliate">Affiliate</a></div>
+      <div><b>Learn</b><a href="#/docs">Docs</a><a href="#/token">$369X token</a><a href="#/resolve">Resolution</a></div>
+      <div><b>Legal</b><a href="#/legal">Terms</a><a href="#/legal">Privacy</a><a href="#/legal">Risk disclosure</a></div>
+      <div><b>Community</b><a href="https://x.com/x369official" target="_blank" rel="noopener">X (Twitter)</a><a href="https://t.me/x369official" target="_blank" rel="noopener">Telegram</a></div>
+    </div>
+  </div>
+</footer>
+
+<nav class="tabbar" aria-label="Mobile">
+  <a href="#/" data-r="home"><svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.8"><path d="M3 11l9-7 9 7v9a1 1 0 0 1-1 1h-5v-6H9v6H4a1 1 0 0 1-1-1z"/></svg>Home</a>
+  <a href="#/markets" data-r="markets"><svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.8"><path d="M4 19V9M10 19V5M16 19v-8M22 19H2"/></svg>Markets</a>
+  <a href="#/portfolio" data-r="portfolio"><svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.8"><rect x="3" y="6" width="18" height="14" rx="3"/><path d="M16 13h2M3 10h18M7 6V4h10v2"/></svg>Portfolio</a>
+  <a href="#/vault" data-r="vault"><svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.8"><rect x="3" y="4" width="18" height="16" rx="3"/><circle cx="12" cy="12" r="3.5"/><path d="M12 8.5V7M15.5 12H17"/></svg>Vault</a>
+  <a href="#/more" data-r="more"><svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.8"><circle cx="5" cy="12" r="1.5"/><circle cx="12" cy="12" r="1.5"/><circle cx="19" cy="12" r="1.5"/></svg>More</a>
+</nav>
+
+<div class="toast" id="toast" role="status" aria-live="polite"></div>
+
+<script src="js/config.js"></script>
+<script src="js/core.js"></script>
+<script src="js/icons.js"></script>
+<script src="js/lmsr.js"></script>
+<script src="js/api.js"></script>
+<script src="js/api-supabase.js"></script>
+<script src="js/vendor/ethers.umd.min.js"></script>
+<script src="js/referral.js"></script>
+<script src="js/chain-events.js"></script>
+<script src="js/api-chain.js"></script>
+<script src="js/wallets.js"></script>
+<script src="js/wallet.js"></script>
+<script src="js/analytics.js"></script>
+<script src="js/share.js"></script>
+<script src="js/tour.js"></script>
+<script src="js/app.js"></script>
+</body>
+</html>
