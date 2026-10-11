@@ -33,10 +33,10 @@ const CONFIG = {
   CHAIN_ON: true,
   CONTRACTS: {
     // filled in from the /deploy/ page results (see README "Deploy the contracts")
-    owner:   "",
-    usdt:    "",   // test USDT (faucet)
-    token:   "",   // test $369X (faucet)
-    market:  "",   // Market369X
+    owner:   "0x9c56d87A15E3dDF324d43F4f9Fd5372a775b54eE",
+    usdt:    "0xa14EBc4C51c062Ec7d027cbb39BF718179E42529",   // test USDT (faucet)
+    token:   "0xCCD5FD734DcB2204b1d4ab7eA439ec90B53Dc5Bb",   // test $369X (faucet)
+    market:  "0xC523b4eD985175505cB63012058cF90A7493F250",   // Market369X
     vault:   "",   // Vault369X
     staking: "",   // Stake369X
     referral: ""   // Referral369X
@@ -106,7 +106,7 @@ const CONFIG = {
   ],
 
   // ---- token page (litepaper v1.2: indicative design, final terms at TGE) --
-  TOKEN_ADDRESS: "",                // test $369X on BSC Testnet (same as CONTRACTS.token)
+  TOKEN_ADDRESS: "0xCCD5FD734DcB2204b1d4ab7eA439ec90B53Dc5Bb",                // test $369X on BSC Testnet (same as CONTRACTS.token)
   TOKEN_SUPPLY: 369000000,          // hard cap, no mint function
   TOKEN_TGE_PCT: 7.26,              // available at TGE: sale tokens + deployed liquidity only
   TOKEN_LISTING: 0.30,              // listing target, USD
