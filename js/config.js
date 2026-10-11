@@ -13,8 +13,8 @@ const CONFIG = {
   // ---- live backend (Supabase) -------------------------------------
   // Fill these in and set USE_MOCK to false to use the shared database.
   // The key is the PUBLISHABLE key (safe to put in the website).
-  SUPABASE_URL: "",                 // e.g. "https://<project-ref>.supabase.co"
-  SUPABASE_KEY: "",                 // Supabase > Project Settings > API Keys > publishable key
+  SUPABASE_URL: "",                 https://rnpwkzvxhhauhjfvajnq.supabase.co
+  SUPABASE_KEY: "",                 sb_publishable_v48_LX-lNDWvG3VW7H4zYQ_U52yK1Ip
 
   // ---- brand ---------------------------------------------------------
   SITE_NAME: "369X",
