@@ -18,7 +18,7 @@ const CONFIG = {
 
   // ---- brand ---------------------------------------------------------
   SITE_NAME: "369X",
-  SITE_URL: "https://369x.io",      // fallback for referral links (the live site uses its own address)
+  SITE_URL: "https://360x.win",      // fallback for referral links (the live site uses its own address)
   TOKEN: "369X",                    // ticker of your token, shown as $369X
   STABLE: "USDT",                   // the stablecoin people trade with
   SOCIAL: {
