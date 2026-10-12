@@ -1018,7 +1018,6 @@ async function route(keepScroll){
 }
 function afterRender(r){
   if(r === "home"){
-    scramble($("#scr1"), "Predict."); setTimeout(() => scramble($("#scr2"), "Participate."), 180);
     const v = +($("#dialYes")?.textContent.replace("¢", "") || 50) / 100; requestAnimationFrame(() => setDial(v));
   }
   if(r === "markets"){
