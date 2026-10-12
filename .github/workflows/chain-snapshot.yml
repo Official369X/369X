@@ -1,0 +1,46 @@
+name: Chain history snapshot
+
+# Writes data/chain-snapshot.json (all market/referral events up to a recent
+# confirmed block) so visitors don't scan the whole chain on their first visit.
+# Run it by hand: Actions -> Chain history snapshot -> Run workflow.
+# It also runs every Monday. Delete the "schedule" block to turn that off.
+on:
+  workflow_dispatch:
+  schedule:
+    - cron: "0 6 * * 1"
+
+permissions:
+  contents: write
+
+concurrency:
+  group: chain-snapshot
+  cancel-in-progress: false
+
+jobs:
+  snapshot:
+    runs-on: ubuntu-latest
+    steps:
+      - uses: actions/checkout@v4
+
+      - uses: actions/setup-node@v4
+        with:
+          node-version: 20
+
+      - name: Install ethers
+        run: npm install --no-save --no-package-lock ethers@6
+
+      - name: Build snapshot
+        run: node scripts/chain-snapshot.js
+
+      - name: Commit snapshot if it changed
+        run: |
+          if [ -z "$(git status --porcelain data/chain-snapshot.json)" ]; then
+            echo "No change to commit."
+            exit 0
+          fi
+          git config user.name "github-actions[bot]"
+          git config user.email "41898282+github-actions[bot]@users.noreply.github.com"
+          git add data/chain-snapshot.json
+          git commit -m "Update chain history snapshot"
+          git pull --rebase origin "${GITHUB_REF_NAME}"
+          git push origin "HEAD:${GITHUB_REF_NAME}"
