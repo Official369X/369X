@@ -165,13 +165,17 @@ async function inviteBanner(){
    PAGES
    ===================================================================== */
 async function pageHome(){
-  const all = await api.getMarkets({ status: "all" }), live = all.filter(m => m.status === "live");
-  const trending = await api.getMarkets({ sort: "trending" });
+  // the three reads are independent: run them together instead of one after another
+  const [all, trending, vault] = await Promise.all([
+    api.getMarkets({ status: "all" }),
+    api.getMarkets({ sort: "trending" }),
+    api.getVault().catch(() => ({ tvl: 0 }))                    // one failed read shouldn't break the home page
+  ]);
+  const live = all.filter(m => m.status === "live");
   const f = [...live].sort((a, b) => b.vol - a.vol)[0];         // only a live market is featured
   const empty = `<div class="dial-card" style="text-align:center"><div class="dial-top"><span>No live markets yet</span></div>
       <p class="lede" style="margin:18px 0">Be the first: ask a question and earn ${pct(CONFIG.CREATOR_FEE, 1)} of every trade on it.</p>
       <a class="btn btn-grad" href="#/create">Create a market</a></div>`;
-  const vault = await api.getVault().catch(() => ({ tvl: 0 }));   // one failed read shouldn't break the home page
   return `
   <section class="hero"><div class="wrap hero-grid">
     <div>
@@ -989,6 +993,17 @@ const PAGES = { home: pageHome, markets: pageMarkets, leverage: pageLeverage, ma
   resolve: pageResolve, rewards: pageRewards, leaderboard: pageLeaderboard, affiliate: pageAffiliate, token: pageToken, docs: pageDocs, legal: pageLegal, admin: pageAdmin, analytics: pageAnalytics, more: pageMore };
 const MORE = ["create", "stake", "resolve", "affiliate", "token", "docs"];
 
+// The home page is the same for everyone (no wallet data), so the last copy is kept on this device.
+// On the next visit it shows at once while fresh numbers load behind it, then it updates in place.
+const HOME_CACHE = "369x:home:v1";
+function homeCacheGet(){
+  try{
+    const c = JSON.parse(localStorage.getItem(HOME_CACHE) || "null");
+    return c && typeof c.h === "string" && c.m === CONFIG.CONTRACTS.market && Date.now() - c.t < 864e5 ? c.h : null;   // same contracts, under 24 h old
+  }catch(e){ return null; }
+}
+function homeCacheSet(h){ try{ localStorage.setItem(HOME_CACHE, JSON.stringify({ h, t: Date.now(), m: CONFIG.CONTRACTS.market })); }catch(e){} }
+
 let routeSeq = 0;
 async function route(keepScroll){
   const seq = ++routeSeq;                       // a newer navigation cancels this one
@@ -998,23 +1013,29 @@ async function route(keepScroll){
   $$("[data-r]").forEach(a => a.classList.toggle("on", a.dataset.r === r || (a.dataset.r === "markets" && r === "market") || (a.dataset.r === "more" && MORE.includes(r))));
   $(".nav-more")?.classList.toggle("on", MORE.includes(r));
   clearInterval(pollT);
-  if(wallet.address && !ACC) await refreshAccount();
   const app = $("#app");
+  // home page: paint the saved copy straight away (before any network wait), refresh it below
+  const cachedHome = r === "home" && !keepScroll && CONFIG.CHAIN_ON ? homeCacheGet() : null;
+  if(cachedHome){ app.innerHTML = cachedHome; afterRender(r); hideSplash(); }
+  if(wallet.address && !ACC) await refreshAccount();
   // show the 369X loader if a new page takes more than a moment (not on in-place refreshes)
   const LOAD_TEXT = { home: "Loading markets…", markets: "Loading markets…", market: "Loading market…", portfolio: "Loading your portfolio…",
     vault: "Loading the vault…", stake: "Loading staking…", resolve: "Loading results…", leaderboard: "Loading the leaderboard…",
     affiliate: "Loading your rewards…", rewards: "Loading your points…", admin: "Checking safety settings…", analytics: "Crunching the numbers…" };
-  const loadT = keepScroll ? null : setTimeout(() => { if(seq === routeSeq){ document.body.classList.add("page-loading"); app.innerHTML = `<section class="page-head"><div class="wrap">${loader(LOAD_TEXT[r] || "Loading…")}</div></section>`; } }, 180);
-  let html;
+  const loadT = keepScroll || cachedHome ? null : setTimeout(() => { if(seq === routeSeq){ document.body.classList.add("page-loading"); app.innerHTML = `<section class="page-head"><div class="wrap">${loader(LOAD_TEXT[r] || "Loading…")}</div></section>`; } }, 180);
+  let html, failed = false;
   try{ html = await PAGES[r](r === "market" ? param : query, query); }
-  catch(e){ console.error(e); html = `<section class="page-head"><div class="wrap"><div class="panel empty">Something went wrong: ${esc(e.message)}<br><a class="btn btn-ghost" href="#/">Go home</a></div></div></section>`; }
+  catch(e){ failed = true; console.error(e); html = `<section class="page-head"><div class="wrap"><div class="panel empty">Something went wrong: ${esc(e.message)}<br><a class="btn btn-ghost" href="#/">Go home</a></div></div></section>`; }
   clearTimeout(loadT);
   if(seq !== routeSeq) return;                  // user moved on while this page was loading
   document.body.classList.remove("page-loading");
+  if(cachedHome && failed) return;              // keep the saved page on screen rather than swap in an error
+  if(r === "home" && !failed && CONFIG.CHAIN_ON) homeCacheSet(html);
+  if(cachedHome && html === cachedHome) return; // nothing changed since last time
   app.innerHTML = html;
   afterRender(r);
   hideSplash();
-  if(!keepScroll) window.scrollTo({ top: 0 });
+  if(!keepScroll && !cachedHome) window.scrollTo({ top: 0 });
 }
 function afterRender(r){
   if(r === "home"){

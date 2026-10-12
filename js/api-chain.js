@@ -122,7 +122,9 @@ const Chain = {
     for(let n = 0; n < urls.length; n++){
       const i = (Chain.rpcIdx + n) % urls.length;
       try{
-        const p = new ethers.JsonRpcProvider(urls[i], Number(CONFIG.CHAIN.chainId), { staticNetwork: true, batchMaxCount: 1 });
+        // give up on a slow RPC after 8 s (the default is minutes) so the next one is tried quickly
+        const req = new ethers.FetchRequest(urls[i]); req.timeout = 8000;
+        const p = new ethers.JsonRpcProvider(req, Number(CONFIG.CHAIN.chainId), { staticNetwork: true, batchMaxCount: 1 });
         await p.getBlockNumber();
         Chain.rpcIdx = i; return (Chain.read = p);
       }catch(e){ /* try the next one */ }
